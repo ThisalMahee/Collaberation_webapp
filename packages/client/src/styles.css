@@ -1,0 +1,777 @@
+/* --------------------------------------------------------------------------
+   Design tokens — monochrome only. Ink on paper, grayscale steps between.
+   -------------------------------------------------------------------------- */
+:root {
+  --ink: #111113;
+  --ink-2: #3f3f46;
+  --ink-3: #71717a;
+  --paper: #ffffff;
+  --surface: #fafafa;
+  --surface-2: #f4f4f5;
+  --line: #e6e6e9;
+  --line-strong: #d4d4d8;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --radius-pill: 999px;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.05);
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid transparent;
+  border-radius: var(--radius-pill);
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-3);
+  background-clip: content-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  color: var(--ink);
+  background: var(--surface);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+button {
+  font: inherit;
+}
+
+.app {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  background: var(--paper);
+}
+
+/* --------------------------------------------------------------------------
+   Top bar
+   -------------------------------------------------------------------------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  z-index: 2;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.brand::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 9px;
+  border-radius: 6px;
+  background: var(--ink);
+  box-shadow: inset 0 0 0 4px var(--paper), inset 0 0 0 7px var(--ink);
+}
+
+.doc-name {
+  max-width: 220px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  padding: 5px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.status-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-connected {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.status-connected::before {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+.status-disconnected {
+  border-color: var(--ink-2);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+@keyframes status-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
+
+.topbar button {
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease,
+    transform 140ms ease, box-shadow 140ms ease;
+}
+
+.topbar button:hover {
+  border-color: var(--ink-3);
+  background: var(--surface-2);
+}
+
+.topbar button:active {
+  transform: translateY(1px);
+}
+
+.topbar button:first-of-type {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.topbar button:first-of-type:hover {
+  border-color: var(--ink-2);
+  background: var(--ink-2);
+}
+
+.topbar button[aria-expanded='true'] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.topbar button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.action-error {
+  max-width: 200px;
+  padding: 5px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Workspace
+   -------------------------------------------------------------------------- */
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 0;
+  min-width: 0;
+}
+
+.workspace.with-history {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 300px;
+}
+
+.notes-panel,
+.flow-canvas,
+.history-panel {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Notes: editor / preview / status
+   -------------------------------------------------------------------------- */
+.notes-panel {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto;
+  border-right: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.notes-editor {
+  position: relative;
+  min-height: 0;
+  padding: 34px 18px 8px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+
+.notes-preview {
+  position: relative;
+  min-height: 0;
+  padding: 34px 20px 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.notes-editor::before,
+.notes-preview::before {
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  color: var(--ink-3);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.notes-editor::before {
+  content: 'Notes';
+}
+
+.notes-preview::before {
+  content: 'Preview';
+}
+
+.notes-status {
+  padding: 9px 18px;
+  color: var(--ink-3);
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* CodeMirror — keep the inline theme's height/font, restyle the surrounding chrome. */
+.notes-editor .cm-editor {
+  background: transparent;
+  color: var(--ink);
+}
+
+.notes-editor .cm-scroller {
+  line-height: 1.65;
+}
+
+.notes-editor .cm-content {
+  padding: 0;
+}
+
+.notes-editor .cm-gutters {
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+}
+
+.notes-editor .cm-activeLine,
+.notes-editor .cm-activeLineGutter {
+  background: var(--surface);
+}
+
+.notes-editor .cm-cursor {
+  border-left-color: var(--ink);
+}
+
+.notes-editor .cm-selectionBackground,
+.notes-editor .cm-content ::selection {
+  background: var(--line-strong) !important;
+}
+
+.notes-editor .cm-ySelection {
+  background: var(--line-strong);
+}
+
+.notes-editor .cm-ySelectionCaret {
+  border-color: var(--ink);
+}
+
+.notes-editor .cm-ySelectionInfo {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 5px;
+  font-family: var(--font-sans);
+}
+
+.notes-editor .cm-panels {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.notes-editor .cm-content:focus-visible {
+  outline: none;
+}
+
+/* Rendered markdown */
+.notes-preview > :first-child {
+  margin-top: 0;
+}
+
+.notes-preview h1,
+.notes-preview h2,
+.notes-preview h3,
+.notes-preview h4 {
+  margin: 1.5em 0 0.55em;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.notes-preview h1 {
+  font-size: 22px;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--line);
+}
+
+.notes-preview h2 {
+  font-size: 18px;
+}
+
+.notes-preview h3 {
+  font-size: 15px;
+}
+
+.notes-preview h4 {
+  font-size: 13.5px;
+}
+
+.notes-preview p,
+.notes-preview li {
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.notes-preview ul,
+.notes-preview ol {
+  padding-left: 1.5em;
+}
+
+.notes-preview a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.notes-preview code {
+  padding: 1px 4px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+.notes-preview pre {
+  margin: 1em 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  overflow-x: auto;
+}
+
+.notes-preview pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.notes-preview blockquote {
+  margin: 1em 0;
+  padding: 6px 0 6px 14px;
+  border-left: 3px solid var(--ink);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--paper);
+  color: var(--ink-2);
+}
+
+.notes-preview table {
+  width: 100%;
+  margin: 1em 0;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.notes-preview th,
+.notes-preview td {
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+.notes-preview th {
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.notes-preview hr {
+  margin: 1.5em 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.notes-preview img {
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Diagram canvas
+   -------------------------------------------------------------------------- */
+.flow-canvas {
+  background: var(--surface);
+}
+
+.flow-canvas .react-flow {
+  --xy-background-pattern-dots-color-default: var(--line-strong);
+  --xy-edge-stroke-default: var(--ink-3);
+  --xy-edge-stroke-selected-default: var(--ink);
+  --xy-connectionline-stroke-default: var(--ink-2);
+  --xy-node-color-default: var(--ink);
+  --xy-node-border-default: 1px solid var(--line-strong);
+  --xy-node-background-color-default: var(--paper);
+  --xy-node-border-radius-default: var(--radius-sm);
+  --xy-node-boxshadow-hover-default: var(--shadow);
+  --xy-node-boxshadow-selected-default: 0 0 0 2px var(--ink);
+  --xy-handle-background-color-default: var(--ink);
+  --xy-handle-border-color-default: var(--paper);
+  --xy-controls-button-background-color-default: var(--paper);
+  --xy-controls-button-background-color-hover-default: var(--surface-2);
+  --xy-controls-button-border-color-default: var(--line);
+  --xy-controls-box-shadow-default: var(--shadow);
+  --xy-minimap-background-color-default: var(--paper);
+  --xy-minimap-node-background-color-default: var(--line-strong);
+  --xy-minimap-mask-background-color-default: rgba(244, 244, 245, 0.6);
+  --xy-selection-background-color-default: rgba(17, 17, 19, 0.05);
+  --xy-selection-border-default: 1px dotted var(--ink-2);
+}
+
+.flow-canvas .react-flow__controls {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+
+.flow-canvas .react-flow__controls-button {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.flow-canvas .react-flow__controls-button:last-child {
+  border-bottom: 0;
+}
+
+.flow-canvas .react-flow__controls-button svg {
+  fill: currentColor;
+}
+
+.flow-canvas .react-flow__minimap {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.flow-canvas .react-flow__node {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.flow-canvas .react-flow__node-default,
+.flow-canvas .react-flow__node-input,
+.flow-canvas .react-flow__node-output {
+  padding: 9px 13px;
+}
+
+.flow-canvas .react-flow__edge-path,
+.flow-canvas .react-flow__connection-path {
+  stroke-width: 1.5;
+}
+
+.flow-canvas .react-flow__attribution {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 9px;
+}
+
+.flow-canvas .react-flow__attribution a {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+/* Only the top-left "Add node" panel is a primary button. React Flow's
+   Controls widget is also a .react-flow__panel (bottom-left), so a broader
+   selector would turn its zoom/fit/interactivity buttons into black squares
+   with invisible icons — and hiding the interactivity toggle makes it easy to
+   disable dragging by accident. */
+.flow-canvas .react-flow__panel.top button {
+  padding: 9px 15px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 12.5px;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: background 140ms ease, transform 140ms ease;
+}
+
+.flow-canvas .react-flow__panel.top button:hover {
+  background: var(--ink-2);
+}
+
+.flow-canvas .react-flow__panel.top button:active {
+  transform: translateY(1px);
+}
+
+/* --------------------------------------------------------------------------
+   Version history
+   -------------------------------------------------------------------------- */
+.history-panel {
+  padding: 20px 16px;
+  overflow-y: auto;
+  border-left: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.history-title {
+  margin: 0 0 16px;
+  color: var(--ink-2);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.history-empty,
+.history-error {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink-3);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.history-error {
+  margin-bottom: 12px;
+  border: 1px solid var(--ink-2);
+  border-left-width: 3px;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-row {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+
+.history-row:hover {
+  border-color: var(--line-strong);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.history-row-main {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 7px;
+  font-size: 12.5px;
+}
+
+.history-kind {
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.history-kind-manual {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.history-label {
+  flex: 1;
+  min-width: 0;
+  color: var(--ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.history-time {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.history-actions {
+  display: flex;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.history-actions button {
+  padding: 5px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.history-actions button:hover:not(:disabled) {
+  border-color: var(--ink-3);
+  background: var(--surface-2);
+}
+
+.history-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive and motion preferences
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .status-pill {
+    margin-left: 0;
+  }
+
+  .workspace,
+  .workspace.with-history {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .workspace.with-history {
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto;
+  }
+
+  .notes-panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .history-panel {
+    max-height: 40vh;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
